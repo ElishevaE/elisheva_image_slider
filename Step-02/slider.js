@@ -23,10 +23,17 @@ function prevImage() {
 function nextImage() {
   currentImg++;
   if (currentImg > (imagesArray.length - 1)) {
-    currentImg = 0 
+    currentImg = 0
   }
   renderImage();
 }
 
+function autoSlideShow() {
+  setInterval(function () {
+    nextImage()
+  }, 1000)
+}
+
 document.getElementById('prev').addEventListener('click', prevImage);
 document.getElementById('next').addEventListener('click', nextImage);
+document.getElementById('auto-run').addEventListener('click', autoSlideShow);
