@@ -6,7 +6,7 @@ function showPageByPageId(pageIdToShow) {
     return;
   }
 
-  console.log(' after the if');
+  console.log('after the if');
 
   // Show the page
   document.getElementById(pageIdToShow).classList.remove('d-none');
