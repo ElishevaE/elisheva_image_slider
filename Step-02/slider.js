@@ -28,12 +28,23 @@ function nextImage() {
   renderImage();
 }
 
+let interval = null;
+
 function autoSlideShow() {
-  setInterval(function () {
+  if (interval != null){
+    return;
+  }
+  interval = setInterval(function () {
     nextImage()
   }, 1000)
+}
+
+function stopSlideShow() {
+  clearInterval(interval);
+  interval = null;
 }
 
 document.getElementById('prev').addEventListener('click', prevImage);
 document.getElementById('next').addEventListener('click', nextImage);
 document.getElementById('auto-run').addEventListener('click', autoSlideShow);
+document.getElementById('stop-run').addEventListener('click', stopSlideShow);
