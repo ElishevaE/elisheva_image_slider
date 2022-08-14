@@ -30,6 +30,7 @@ function nextImage() {
 
 let interval = null;
 
+// This function automatically runs the slideshow
 function autoSlideShow() {
   if (interval != null){
     return;
@@ -39,6 +40,7 @@ function autoSlideShow() {
   }, 1000)
 }
 
+// This function stops the slideshow
 function stopSlideShow() {
   clearInterval(interval);
   interval = null;
