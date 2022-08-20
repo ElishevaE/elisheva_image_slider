@@ -52,49 +52,105 @@ const imageFeatured = document.getElementById('image-featured');
 const baseUrl = 'images/';
 
 function renderImage() {
-  const imageObject = imagesArray[currentImg];
-  const imageURL = 'images/' + imageObject.imageURL;
-  document.getElementById('slider-image').src = imageURL;
-  document.getElementById('image-title').innerHTML = imageObject.title;
+  const imageObject = imagesArray[currentImage];
+  //console.log('imageObject', imageObject);
+
+  const imageURL = baseUrl + imageObject.imageURL;
+  sliderImage.src = imageURL;
+
+  imageTitle.innerHTML = imageObject.title;
+  imageDescription.innerHTML = imageObject.description;
+  imageCredits.innerHTML = imageObject.credits;
+  imageFeatured.innerHTML = imageObject.featured;
 }
 
 function prevImage() {
-  currentImg--;
-  if (currentImg < 0) {
-    currentImg = imagesArray.length - 1;
+  currentImage--;
+  if (currentImage < 0) {
+    currentImage = imagesArray.length - 1;
   }
+  console.log('prev currentImage', currentImage);
   renderImage();
 }
 
 function nextImage() {
-  currentImg++;
-  if (currentImg > (imagesArray.length - 1)) {
-    currentImg = 0
+  currentImage++;
+  if (currentImage > imagesArray.length - 1) {
+    currentImage = 0;
   }
+
+  //console.log('next currentImage', currentImage);
   renderImage();
 }
 
 let interval = null;
+let isSlideShowRunning = false;
 
-// This function automatically runs the slideshow
+/*
+  The function automatic change the images
+*/
 function autoSlideShow() {
-  if (interval != null){
+  if (interval != null) {
     return;
   }
+
+  // This code will run only if the interval variable is null
   interval = setInterval(function () {
-    nextImage()
-  }, 1000)
+    nextImage();
+  }, 1000);
+
+  autoRunButton.classList.add('d-none');
+  stopRunButton.classList.remove('d-none');
+  console.log('interval', interval);
+  isSlideShowRunning = true;
 }
 
-// This function stops the slideshow
+/*
+The Function stop the slide show images
+*/
 function stopSlideShow() {
   clearInterval(interval);
+  //Set the interval to null so we can run autoSlideShow again
+  autoRunButton.classList.remove('d-none');
+  stopRunButton.classList.add('d-none');
   interval = null;
+  isSlideShowRunning = false;
+  console.log('stopSlideShow interval', interval);
 }
 
-document.getElementById('prev').addEventListener('click', prevImage);
-document.getElementById('next').addEventListener('click', nextImage);
-document.getElementById('auto-run').addEventListener('click', autoSlideShow);
-document.getElementById('stop-run').addEventListener('click', stopSlideShow);
-document.getElementById('slider-image').addEventListener('mouseenter', stopSlideShow);
-document.getElementById('slider-image').addEventListener('mouseleave', autoSlideShow);
+prevButton.addEventListener('click', prevImage);
+nextButton.addEventListener('click', nextImage);
+autoRunButton.addEventListener('click', autoSlideShow);
+stopRunButton.addEventListener('click', stopSlideShow);
+
+function mouseStartSlideShow() {
+  if (isSlideShowRunning == false) {
+    return;
+  }
+
+  interval = setInterval(function () {
+    nextImage();
+  }, 1000);
+
+  console.log('mouseStartSlideShow slide show is running');
+}
+
+function mouseStopSlideShow() {
+  if (isSlideShowRunning == false) {
+    return;
+  }
+  // this code will work only if the slide show is working
+  clearInterval(interval);
+
+  console.log('mouseStopSlideShow slide show is running');
+}
+
+document
+  .getElementById('slider-image')
+  .addEventListener('mouseenter', mouseStopSlideShow);
+
+document
+  .getElementById('slider-image')
+  .addEventListener('mouseleave', mouseStartSlideShow);
+
+renderImage();
